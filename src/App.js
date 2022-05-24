@@ -1,6 +1,7 @@
 import './App.css';
 import * as React from "react";
-import {SampleComponent} from "./Components/SampleComponent";
+import { SampleComponent } from "./Components/SampleComponent";
+import { PostRequestAsyncAwait } from "./services/PostRequestAsyncAwait";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           </select>
 
       <br/><br/><button id="Submit">Submit</button>
+      <PostRequestAsyncAwait/>
       </body>
     </div>
   );
