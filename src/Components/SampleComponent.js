@@ -15,6 +15,6 @@ export function SampleComponent () {
     }, []);
 
     return(
-        <div id="root">Enter Character Details Here: {sampleData.dummyData}</div>
+        <div id="root">{sampleData.dummyData}</div>
     )
 }
