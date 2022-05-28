@@ -3,6 +3,7 @@ import { useState } from "react";
 
 const CharacterComponent = () => {
     const [charName, setName] =  useState('');
+    const [era, setEra] =  useState('classic');
     const [occupation, setOccupation] =  useState('');
     const [age, setAge] =  useState('');
     const [statsGeneration, setStatsGeneration] =  useState('roll');
@@ -11,7 +12,7 @@ const CharacterComponent = () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        const characterDetails = { charName, occupation, age, statsGeneration, highestValue };
+        const characterDetails = { charName, era, occupation, age, statsGeneration, highestValue };
         fetch('http://localhost:8080/getUsers', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -26,6 +27,11 @@ const CharacterComponent = () => {
                 <form onSubmit={handleSubmit}>
 
                     <br/><input id="name" placeholder="Character Name" value={charName} onChange={(e) => setName(e.target.value)}/>
+                    <br/><select id="era" value={era} onChange={(e) => setEra(e.target.value)}>
+                        <option value="darkAge">Dark Ages</option>
+                        <option value="gaslight">Cthulhu by Gaslight</option>
+                        <option value="classic">Classic 1920s</option>
+                    </select>
                     <br/><input id="occupation" placeholder="Character Occupation" value={occupation} onChange={(e) => setOccupation(e.target.value)}></input>
                     <br/><input id="age" placeholder="Character Age" value={age} onChange={(e) => setAge(e.target.value)}></input>
                     <br/><label htmlFor="statsGeneration">Standard characteristics or roll: </label>
