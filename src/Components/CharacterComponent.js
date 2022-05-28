@@ -1,50 +1,40 @@
 import * as React from "react";
-import {PostRequestAsyncAwait} from "../services/PostRequestAsyncAwait";
+import { useState } from "react";
 
-export class CharacterComponent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            charName: null,
-            occupation: null,
-            age: null,
-            statsGeneration: "roll",
-            highestValue: null
-        };
+const CharacterComponent = () => {
+    const [charName, setName] =  useState('');
+    const [occupation, setOccupation] =  useState('');
+    const [age, setAge] =  useState('');
+    const [statsGeneration, setStatsGeneration] =  useState('roll');
+    const [highestValue, setHighestValue] =  useState('');
+    const [returnData, setReturnData] = useState('');
 
-        this.handleInputChange = this.handleInputChange.bind(this);
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        const characterDetails = { charName, occupation, age, statsGeneration, highestValue };
+        fetch('http://localhost:8080/getUsers', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(characterDetails)
+    }).then(response => response.json())
+            .then((data) => setReturnData(data.text));
+    };
 
-        this.handleSubmit = (event) => {
-            console.log(`The name you entered was: ${this.charName}`)
-        }
-    }
+    return (
+            <div className="CharacterComponent">
+                <h2>Enter Character Details Here:</h2>
+                <form onSubmit={handleSubmit}>
 
-        handleInputChange(event)
-        {
-            const target = event.target;
-            const value = target.value;
-            const name = target.charName;
-
-            this.setState({
-                [name]: value
-            });
-        }
-
-        render()
-        {
-            return (
-                <form>
-                    <br/>Enter Character Details Here:<br/>
-                    <br/><input id="name" placeholder="Character Name" value={this.charName}/>
-                    <br/><input id="occupation" placeholder="Character Occupation"></input>
-                    <br/><input id="age" placeholder="Character Age"></input>
+                    <br/><input id="name" placeholder="Character Name" value={charName} onChange={(e) => setName(e.target.value)}/>
+                    <br/><input id="occupation" placeholder="Character Occupation" value={occupation} onChange={(e) => setOccupation(e.target.value)}></input>
+                    <br/><input id="age" placeholder="Character Age" value={age} onChange={(e) => setAge(e.target.value)}></input>
                     <br/><label htmlFor="statsGeneration">Standard characteristics or roll: </label>
-                    <select id="statsGeneration">
+                    <select id="statsGeneration" value={statsGeneration} onChange={(e) => setStatsGeneration(e.target.value)}>
                         <option value="roll">Roll Stats</option>
                         <option value="standard">Standard Array</option>
                     </select>
                     <br/><label htmlFor="highestValue">Highest value (or leave blank for random): </label>
-                    <select id="highestValue">
+                    <select id="highestValue" value={highestValue} onChange={(e) => setHighestValue(e.target.value)}>
                         <option value="none"></option>
                         <option value="strength">Strength</option>
                         <option value="constitution">Constitution</option>
@@ -57,9 +47,12 @@ export class CharacterComponent extends React.Component {
                     </select>
 
                     <br/><br/>
-                    <button id="Submit" type="Submit" onClick={this.handleSubmit}>Submit</button>
+                    <button id="Submit" type="Submit">Submit</button>
 
                 </form>
-            );
-        }
+                <br/><br/><div>{returnData}</div>
+            </div>);
+
     }
+
+    export default CharacterComponent;
