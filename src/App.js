@@ -1,13 +1,13 @@
 import './App.css';
 import * as React from "react";
-import { SampleComponent } from "./Components/SampleComponent";
+import { OccupationComponent } from "./Components/OccupationComponent";
 import CharacterComponent from "./Components/CharacterComponent";
 
 function App() {
   return (
     <div className="App">
       <body>
-      <SampleComponent/>
+      <OccupationComponent/>
         <br/>
       <CharacterComponent/>
       </body>
