@@ -9,7 +9,7 @@ const CharacterComponent = () => {
     const [statsGeneration, setStatsGeneration] =  useState('roll');
     const [highestValue, setHighestValue] =  useState('');
     const [returnData, setReturnData] = useState('');
-    const [eraOccupations, setEraOccupations] = useState('')
+    const [eraOccupations, setEraOccupations] = useState([]);
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -25,23 +25,28 @@ const CharacterComponent = () => {
     const handleChangeEra = (e) =>{
         e.preventDefault();
         setEra(e.target.value)
-        fetch('http://localhost:8080/getOccupations', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ title: e.target.value })
-        }).then(response => response.json())
-            .then((data) => setEraOccupations(data))
-            .then(setOccupation(""))
+        setOccupation("")
+        setOccupationComponent(e.target.value)
     };
 
-    useEffect(() =>{
+    const setOccupationComponent = (era, e) => {
+        if(e && e.preventDefault())
+            e.preventDefault();
         fetch('http://localhost:8080/getOccupations', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ title: "classic" })
+            body: JSON.stringify({ title: era })
         }).then(response => response.json())
-            .then((data) => setEraOccupations(data))
-    }, []);
+            .then((data) => {
+                setEraOccupations(data)
+            })
+    };
+
+    useEffect((e) => {
+        if(e && e.preventDefault())
+            e.preventDefault()
+        setOccupationComponent("classic")
+    }, [])
 
     return (
             <div className="CharacterComponent">
@@ -53,10 +58,12 @@ const CharacterComponent = () => {
                         <option value="darkAge">Dark Ages</option>
                         <option value="gaslight">Cthulhu by Gaslight</option>
                         <option value="classic">Classic 1920s</option>
+                        <option value="modern">Modern</option>
                     </select>
-                    <br/><select id="occupations" value={occupation} onChange={(e) => setOccupation(e.target.value)}>
-                        <option value="random"></option>
-                        <option value={eraOccupations}>{eraOccupations}</option>
+                    <br/> <select id="eraOccupations" value={occupation} onChange={(e) => setOccupation(e.target.value)}>
+                        {eraOccupations.map(function(d, idx) {
+                            return (<option key={idx} value={d}> {d} </option>)
+                        })}
                     </select>
                     <br/><input id="age" placeholder="Character Age" value={age} onChange={(e) => setAge(e.target.value)}></input>
                     <br/><label htmlFor="statsGeneration">Standard characteristics or roll: </label>
