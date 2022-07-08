@@ -4,16 +4,19 @@ import {useEffect, useState} from "react";
 const CharacterComponent = () => {
     const [charName, setName] =  useState('');
     const [era, setEra] =  useState('classic');
+    const [gender, setGender] =  useState('');
+    const [region, setRegion] =  useState('');
     const [occupation, setOccupation] =  useState('');
     const [age, setAge] =  useState('');
     const [statsGeneration, setStatsGeneration] =  useState('roll');
     const [highestValue, setHighestValue] =  useState('');
     const [returnData, setReturnData] = useState('');
     const [eraOccupations, setEraOccupations] = useState([]);
+    const [eraRegions, setEraRegions] = useState([]);
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        const characterDetails = { charName, era, occupation, age, statsGeneration, highestValue };
+        const characterDetails = { charName, era, gender, region, occupation, age, statsGeneration, highestValue };
         fetch('http://localhost:8080/getUsers', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -26,7 +29,9 @@ const CharacterComponent = () => {
         e.preventDefault();
         setEra(e.target.value)
         setOccupation("")
+        setRegion("Random")
         setOccupationComponent(e.target.value)
+        setRegionComponent(e.target.value)
     };
 
     const setOccupationComponent = (era, e) => {
@@ -42,10 +47,24 @@ const CharacterComponent = () => {
             })
     };
 
+    const setRegionComponent = (era, e) => {
+        if(e && e.preventDefault())
+            e.preventDefault();
+        fetch('http://localhost:8080/getRegions', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ title: era })
+        }).then(response => response.json())
+            .then((data) => {
+                setEraRegions(data)
+            })
+    };
+
     useEffect((e) => {
         if(e && e.preventDefault())
             e.preventDefault()
         setOccupationComponent("classic")
+        setRegionComponent("classic")
     }, [])
 
     return (
@@ -59,6 +78,17 @@ const CharacterComponent = () => {
                         <option value="gaslight">Cthulhu by Gaslight</option>
                         <option value="classic">Classic 1920s</option>
                         <option value="modern">Modern</option>
+                    </select>
+                    <br/><select gender="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+                        <option value="random">Random</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <br/><select region="region" value={region} onChange={(e) => setRegion(e.target.value)}>
+                        {eraRegions.map(function(d, idx) {
+                            return (<option key={idx} value={d}> {d} </option>)
+                        })}
                     </select>
                     <br/> <select id="eraOccupations" value={occupation} onChange={(e) => setOccupation(e.target.value)}>
                         {eraOccupations.map(function(d, idx) {
