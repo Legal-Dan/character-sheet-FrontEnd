@@ -1,8 +1,9 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
+import SheetComponent from "./SheetComponent";
 
 const CharacterComponent = () => {
-    const [charName, setName] =  useState('');
+    const [charName, setCharName] =  useState('');
     const [era, setEra] =  useState('classic');
     const [gender, setGender] =  useState('');
     const [region, setRegion] =  useState('');
@@ -10,7 +11,7 @@ const CharacterComponent = () => {
     const [age, setAge] =  useState('');
     const [statsGeneration, setStatsGeneration] =  useState('roll');
     const [highestValue, setHighestValue] =  useState('');
-    const [returnData, setReturnData] = useState('');
+    const [returnData, setReturnData] = useState('|||||Skills>0');
     const [eraOccupations, setEraOccupations] = useState([]);
     const [eraRegions, setEraRegions] = useState([]);
 
@@ -22,7 +23,9 @@ const CharacterComponent = () => {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(characterDetails)
     }).then(response => response.json())
-            .then((data) => setReturnData(data.text));
+            .then((data) => {
+                setReturnData(data.text)
+            });
     };
 
     const handleChangeEra = (e) =>{
@@ -72,20 +75,20 @@ const CharacterComponent = () => {
                 <h2>Enter Character Details Here:</h2>
                 <form onSubmit={handleSubmit}>
 
-                    <br/><input id="name" placeholder="Character Name" value={charName} onChange={(e) => setName(e.target.value)}/>
+                    <br/><input id="name" placeholder="Character Name" value={charName} onChange={(e) => setCharName(e.target.value)}/>
                     <br/><select id="era" value={era} onChange={ handleChangeEra }>
                         <option value="darkAge">Dark Ages</option>
                         <option value="gaslight">Cthulhu by Gaslight</option>
                         <option value="classic">Classic 1920s</option>
                         <option value="modern">Modern</option>
                     </select>
-                    <br/><select gender="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+                    <br/><select value={gender} onChange={(e) => setGender(e.target.value)}>
                         <option value="random">Random</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                         <option value="other">Other</option>
                     </select>
-                    <br/><select region="region" value={region} onChange={(e) => setRegion(e.target.value)}>
+                    <br/><select value={region} onChange={(e) => setRegion(e.target.value)}>
                         {eraRegions.map(function(d, idx) {
                             return (<option key={idx} value={d}> {d} </option>)
                         })}
@@ -95,7 +98,7 @@ const CharacterComponent = () => {
                             return (<option key={idx} value={d}> {d} </option>)
                         })}
                     </select>
-                    <br/><input id="age" placeholder="Character Age" value={age} onChange={(e) => setAge(e.target.value)}></input>
+                    <br/><input id="age" placeholder="Character Age" value={age} onChange={(e) => setAge(e.target.value)}/>
                     <br/><label htmlFor="statsGeneration">Standard characteristics or roll: </label>
                     <select id="statsGeneration" value={statsGeneration} onChange={(e) => setStatsGeneration(e.target.value)}>
                         <option value="roll">Roll Stats</option>
@@ -118,7 +121,7 @@ const CharacterComponent = () => {
                     <button id="Submit" type="Submit">Submit</button>
 
                 </form>
-                <br/><br/><div>{returnData}</div>
+                <SheetComponent data={returnData}/>
             </div>);
 
     }
