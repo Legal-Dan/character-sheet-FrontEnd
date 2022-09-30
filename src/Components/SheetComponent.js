@@ -8,6 +8,7 @@ const SheetComponent = (props) => {
     const region = data[3]
     const splitStats = splitToMap(data[4])
     const skills = splitToMap(data[5])
+    const damage = data[6]
 //a["key"] = "some"
     function splitToMap(dataSet){
         let toReturn = []
@@ -31,6 +32,8 @@ return (
                 Region: {region}
                 <br/>
                 Strength: {splitStats["strength"]}, Dexterity: {splitStats["dexterity"]}, Constitution: {splitStats["constitution"]}, Power: {splitStats["power"]}, Intelligence: {splitStats["intelligence"]}, Education: {splitStats["education"]}, Size: {splitStats["size"]}, Appearance: {splitStats["appearance"]}
+                <br/>
+                HP: {splitStats["hp"]}, Move Rate: {splitStats["move"]}, Build: {splitStats["build"]}, Magic Points: {splitStats["magic"]}, Damage Bonus: {damage}
                 <br/>
                 {displaySkills(Object.entries(skills))}
             </div>);
