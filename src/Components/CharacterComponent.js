@@ -19,7 +19,7 @@ const CharacterComponent = () => {
         e.preventDefault();
         const characterDetails = { charName, era, gender, region, occupation, age, statsGeneration, highestValue };
         // fetch('http://localhost:8080/getUsers', {
-        fetch('https://ec2-3-91-56-40.compute-1.amazonaws.com:8080/getUsers', {
+        fetch('http://ec2-3-91-56-40.compute-1.amazonaws.com:8080/getUsers', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(characterDetails)
@@ -42,7 +42,7 @@ const CharacterComponent = () => {
         if(e && e.preventDefault())
             e.preventDefault();
         // fetch('http://localhost:8080/getOccupations', {
-        fetch('https://ec2-3-91-56-40.compute-1.amazonaws.com:8080/getOccupations', {
+        fetch('http://ec2-3-91-56-40.compute-1.amazonaws.com:8080/getOccupations', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ title: era })
@@ -56,7 +56,7 @@ const CharacterComponent = () => {
         if(e && e.preventDefault())
             e.preventDefault();
         // fetch('http://localhost:8080/getRegions', {
-        fetch('https://ec2-3-91-56-40.compute-1.amazonaws.com:8080/getRegions', {
+        fetch('http://ec2-3-91-56-40.compute-1.amazonaws.com:8080/getRegions', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ title: era })
